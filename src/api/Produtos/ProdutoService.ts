@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import * as path from 'path';
-import { Produto } from '../models/ProdutoModel';
+import { Produto } from './ProdutoModel';
 
 const filePath = path.join(__dirname, '../../../produtos.json');
 

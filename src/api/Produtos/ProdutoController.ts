@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { ProdutoServices } from '../services/ProdutoService';
-import { ValidacaoProduto } from '../models/ProdutoModel';
+import { ProdutoServices } from './ProdutoService';
+import { ValidacaoProduto } from './ProdutoModel';
 
 export default class ProdutoController {
     async mostraProdutos(req: Request, res: Response): Promise<void> {
