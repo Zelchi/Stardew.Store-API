@@ -45,7 +45,7 @@ export class ProdutoServices {
         if (produto.quantidade) {
             produtoSalvo.quantidade = produto.quantidade;
         }
-        
+
         await fs.writeFile(filePath, JSON.stringify(produtos, null, 2));
 
         return produtoSalvo;

@@ -30,7 +30,7 @@ export default class ProdutoController {
         }
     }
 
-    async atualizarProduto(req: Request, res: Response): Promise<void> {
+    async atualizaProduto(req: Request, res: Response): Promise<void> {
         const id = req.params.id ? parseInt(req.params.id) : 0;
         const { nome, valor, quantidade } = req.body;
         const produto = { nome, valor, quantidade };
