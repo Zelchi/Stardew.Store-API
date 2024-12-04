@@ -22,4 +22,4 @@ Esta é uma API desenvolvida em **TypeScript** que utiliza **SQLite** como banco
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/Zelchi/API-TypeScript.git
+   git clone https://github.com/Zelchi/ChatWeb-API.git
