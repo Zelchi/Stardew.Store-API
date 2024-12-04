@@ -2,16 +2,15 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 
-export default class ProdutoEntity {
-
+export class ProdutoEntity {
     @PrimaryGeneratedColumn()
-    id?: number;
+    id!: number;
     @Column()
-    nome?: string;
+    nome!: string;
     @Column()
-    valor?: number;
+    valor!: number;
     @Column()
-    quantidade?: number;
+    quantidade!: number;
     @Column()
-    dataCriacao?: Date;
+    dataCriacao!: Date;
 }

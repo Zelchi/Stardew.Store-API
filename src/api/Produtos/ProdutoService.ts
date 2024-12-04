@@ -1,63 +1,48 @@
-import fs from 'fs/promises';
-import * as path from 'path';
 import { Produto } from './ProdutoModel';
-
-const filePath = path.join(__dirname, '../../../produtos.json');
+import { ProdutoRepository } from './ProdutoRepository';
+import { ProdutoEntity} from './ProdutoEntity';
 
 export class ProdutoServices {
+    private database: ProdutoRepository
+    constructor(repository: ProdutoRepository) {
+        this.database = repository; 
+    };
 
-    async pegarTodosProdutos(): Promise<Produto[]> {
-        const data = await fs.readFile(filePath, 'utf-8');
-        return JSON.parse(data) as Produto[];
+    async visualizarProdutos(): Promise<ProdutoEntity[] | any> {
+        const listaProdutos = await this.database.visualizarProdutos();
+        return listaProdutos;
     }
 
-    async pegaProdutoPorId(id: number): Promise<Produto | undefined> {
-        const produtos = await this.pegarTodosProdutos();
-        return produtos.find(produto => produto.id === id);
+    async visualizarProdutoPorId(id: number): Promise<ProdutoEntity | any> {
+        const produto = await this.database.visualizarProdutoPorId(id);
+        return produto;
     }
 
     async criarProduto(produto: Produto): Promise<void> {
-        const produtos = await this.pegarTodosProdutos();
-
-        const lastId = produtos[produtos.length - 1]?.id || 0;
-        produto.id = lastId + 1;
-
-        produtos.push(produto);
-        await fs.writeFile(filePath, JSON.stringify(produtos, null, 2));
+        this.database.criarProduto(produto);
     }
 
-    async atualizarProduto(id: number, produto: Produto): Promise<Produto> {
-        const produtos = await this.pegarTodosProdutos();
-        const index = produtos.findIndex(produto => produto.id === id);
-        if (index === -1) {
-            throw new Error('Produto não encontrado');
+    async atualizarProduto(id: number, produto: Produto): Promise<ProdutoEntity | any> {
+        const novoProduto: any = {};
+
+        if (produto.nome !== undefined && produto.nome !== null) {
+            novoProduto.nome = produto.nome;
         }
 
-        const produtoSalvo = produtos[index];
-        if (!produtoSalvo) throw new Error('Batata Frita');
-
-        if (produto.nome) {
-            produtoSalvo.nome = produto.nome;
-        }
-        if (produto.valor) {
-            produtoSalvo.valor = produto.valor;
-        }
-        if (produto.quantidade) {
-            produtoSalvo.quantidade = produto.quantidade;
+        if (produto.valor !== undefined && produto.valor !== null) {
+            novoProduto.valor = produto.valor;
         }
 
-        await fs.writeFile(filePath, JSON.stringify(produtos, null, 2));
+        if (produto.quantidade !== undefined && produto.quantidade !== null) {
+            novoProduto.quantidade = produto.quantidade;
+        }
 
-        return produtoSalvo;
+        const produtoAtualizado = await this.database.atualizarProduto(id, novoProduto);
+        return produtoAtualizado;
     }
 
-    async deletarProduto(id: number): Promise<void> {
-        const produtos = await this.pegarTodosProdutos();
-        const index = produtos.findIndex(produto => produto.id === id);
-        if (index === -1) {
-            return;
-        }
-        produtos.splice(index, 1);
-        await fs.writeFile(filePath, JSON.stringify(produtos, null, 2));
+    async deletarProduto(id: number): Promise<ProdutoEntity | any> {
+       const produtoDeletado = await this.database.deletarProduto(id);
+       return produtoDeletado;
     }
 }
