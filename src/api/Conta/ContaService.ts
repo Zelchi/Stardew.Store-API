@@ -10,14 +10,21 @@ export class ContaServices {
     };
 
     async criarConta(conta: Conta): Promise<boolean> {
-        this.database.criarConta(conta);
-        return true;
+
+        const senhaUsuario = conta.senha;
+        const senhaCriptografada = await bcrypt.hash(senhaUsuario, 8);
+        conta.senha = senhaCriptografada;
+
+        if (await this.database.criarConta(conta)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     async loginConta(conta: Conta): Promise<string | null> {
 
         const usuario = await this.database.buscarUsuario(conta);
-
         const resultado = await bcrypt.compare(conta.senha, usuario!.senha)
 
         if (resultado) {

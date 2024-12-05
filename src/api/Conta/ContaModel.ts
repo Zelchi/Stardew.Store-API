@@ -6,6 +6,7 @@ export interface Conta {
     email: string;
     senha: string;
     saldo?: number;
+    imagem?: string;
     inventario?: Produto[];
 }
 

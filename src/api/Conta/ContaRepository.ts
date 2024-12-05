@@ -16,15 +16,18 @@ export class ContaRepository {
         contaEntity.email = conta.email;
         contaEntity.senha = conta.senha;
         contaEntity.saldo = 0;
+        contaEntity.inventario = [];
+
         contaEntity.dataCriacao = new Date();
 
         return contaEntity;
     }
 
-    criarConta = async (conta: Conta): Promise<void> => {
+    criarConta = async (conta: Conta): Promise<boolean> => {
         try {
             const contaEntity = this.gerarConta(conta);
             await this.database.save(contaEntity);
+            return true;
         } catch (error) {
             throw error;
         }

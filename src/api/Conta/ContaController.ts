@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { ContaServices } from "./ContaService";
 import { ContaRepository } from "./ContaRepository";
@@ -13,20 +12,24 @@ export class ContaController {
         const { nome, email, senha } = req.body;
         const conta = { nome, email, senha };
 
-        let senhaInput = conta.senha; //batata123
-        senhaInput = bcrypt.hash(senhaInput, 8);
-        conta.senha = senhaInput;
+        if (conta.nome === undefined || conta.email === undefined || conta.senha === undefined) {
+            res.status(400).send("Dados não informados");
+        }
 
         if (await contaServices.criarConta(conta)) {
-            res.status(201).send();
+            res.status(201).send("Conta criada com sucesso");
         } else {
-            res.status(400).send();
+            res.status(400).send("Erro ao criar conta");
         }
     }
 
     loginConta = async (req: Request, res: Response): Promise<void> => {
         const { email, senha } = req.body;
-        const conta = { email, senha };
+        const conta = { nome: "", email, senha };
+
+        if (conta.email === undefined || conta.senha === undefined) {
+            res.status(400).send("Email ou senha não informados");
+        }
 
         const token = contaServices.loginConta(conta);
 

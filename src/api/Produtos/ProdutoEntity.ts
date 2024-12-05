@@ -13,6 +13,8 @@ export class ProdutoEntity {
     @Column()
     quantidade!: number;
     @Column()
+    imagem!: string;
+    @Column()
     dataCriacao!: Date;
 
     @ManyToOne(() => ContaEntity, conta => conta.inventario)
