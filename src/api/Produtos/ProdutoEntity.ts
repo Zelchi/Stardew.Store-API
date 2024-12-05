@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ContaEntity } from "../Conta/ContaEntity";
 
 @Entity()
 
@@ -13,4 +14,7 @@ export class ProdutoEntity {
     quantidade!: number;
     @Column()
     dataCriacao!: Date;
+
+    @ManyToOne(() => ContaEntity, conta => conta.inventario)
+    conta!: ContaEntity;
 }

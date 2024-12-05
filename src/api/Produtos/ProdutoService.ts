@@ -8,12 +8,12 @@ export class ProdutoServices {
         this.database = repository; 
     };
 
-    async visualizarProdutos(): Promise<ProdutoEntity[] | any> {
+    async visualizarProdutos(): Promise<ProdutoEntity[] | null> {
         const listaProdutos = await this.database.visualizarProdutos();
         return listaProdutos;
     }
 
-    async visualizarProdutoPorId(id: number): Promise<ProdutoEntity | any> {
+    async visualizarProdutoPorId(id: number): Promise<ProdutoEntity | null> {
         const produto = await this.database.visualizarProdutoPorId(id);
         return produto;
     }
@@ -22,7 +22,7 @@ export class ProdutoServices {
         this.database.criarProduto(produto);
     }
 
-    async atualizarProduto(id: number, produto: Produto): Promise<ProdutoEntity | any> {
+    async atualizarProduto(id: number, produto: Produto): Promise<ProdutoEntity | null> {
         const novoProduto: any = {};
 
         if (produto.nome !== undefined && produto.nome !== null) {
@@ -41,7 +41,7 @@ export class ProdutoServices {
         return produtoAtualizado;
     }
 
-    async deletarProduto(id: number): Promise<ProdutoEntity | any> {
+    async deletarProduto(id: number): Promise<ProdutoEntity | null> {
        const produtoDeletado = await this.database.deletarProduto(id);
        return produtoDeletado;
     }
