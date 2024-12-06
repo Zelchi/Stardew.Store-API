@@ -1,0 +1,11 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+      DATABASE_PATH: /usr/src/app/src/database/db.sqlite
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src/database:/usr/src/app/src/database

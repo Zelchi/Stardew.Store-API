@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "nodemon server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "init": "docker compose up --build -d",
+    "off": "docker compose down"
   },
   "nodemonConfig": {
     "ignore": [
