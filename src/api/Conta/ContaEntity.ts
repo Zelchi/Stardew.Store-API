@@ -1,5 +1,6 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from "typeorm";
 import { ProdutoEntity } from "../Produtos/ProdutoEntity";
+import { MensagemEntity } from "../Chat/MensagemEntity";
 
 @Entity()
 
@@ -7,17 +8,19 @@ export class ContaEntity {
     @PrimaryGeneratedColumn()
     id!: number;
     @Column()
-    nome!: string;
+    nome?: string;
     @Column()
-    email!: string;
+    email?: string;
     @Column()
-    senha!: string;
+    senha?: string;
+    @Column({ nullable: true }) 
+    imagem?: string;
     @Column()
-    imagem!: string;
+    saldo?: number;
     @Column()
-    saldo!: number;
-    @OneToMany(() => ProdutoEntity, produto => produto)
-    inventario!: ProdutoEntity[];
-    @Column()
-    dataCriacao!: Date;
+    dataCriacao?: Date;
+    @OneToMany(() => ProdutoEntity, produto => produto.conta)
+    inventario?: ProdutoEntity[];
+    @OneToMany(() => MensagemEntity, mensagem => mensagem.conteudo)
+    mensagens?: MensagemEntity[];
 }

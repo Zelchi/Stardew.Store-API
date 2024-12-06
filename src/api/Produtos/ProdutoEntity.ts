@@ -7,16 +7,15 @@ export class ProdutoEntity {
     @PrimaryGeneratedColumn()
     id!: number;
     @Column()
-    nome!: string;
+    nome?: string;
     @Column()
-    valor!: number;
+    valor?: number;
     @Column()
-    quantidade!: number;
+    quantidade?: number;
     @Column()
-    imagem!: string;
+    imagem?: string;
     @Column()
-    dataCriacao!: Date;
-
+    dataCriacao?: Date;
     @ManyToOne(() => ContaEntity, conta => conta.inventario)
-    conta!: ContaEntity;
+    conta?: ContaEntity;
 }

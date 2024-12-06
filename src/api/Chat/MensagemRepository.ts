@@ -39,9 +39,9 @@ export class MensagemRepository {
         }
     }
 
-    deletaMensagem = async (id: number): Promise<boolean> => {
+    deletaMensagem = async (idSala: number, idMsg: number): Promise<boolean> => {
         try {
-            await this.database.delete({ id });
+            await this.database.delete({ sala: idSala, id: idMsg });
             return true;
         } catch (error) {
             throw error;

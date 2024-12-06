@@ -20,8 +20,8 @@ export class MensagemServices {
         }
     }
 
-    async deletarMensagem(id: number): Promise<boolean> {
-        if (await this.database.deletaMensagem(id)) {
+    async deletarMensagem(idSala: number, idMsg: number): Promise<boolean> {
+        if (await this.database.deletaMensagem(idSala, idMsg)) {
             return true;
         } else {
             return false;

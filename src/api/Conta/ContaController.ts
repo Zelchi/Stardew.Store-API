@@ -19,7 +19,7 @@ export class ContaController {
         if (await contaServices.criarConta(conta)) {
             res.status(201).send("Conta criada com sucesso");
         } else {
-            res.status(400).send("Erro ao criar conta");
+            res.status(400).send("Conta já existe");
         }
     }
 
@@ -31,7 +31,7 @@ export class ContaController {
             res.status(400).send("Email ou senha não informados");
         }
 
-        const token = contaServices.loginConta(conta);
+        const token = await contaServices.loginConta(conta);
 
         if (token) {
             res.status(200).send(token);

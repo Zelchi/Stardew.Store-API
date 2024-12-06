@@ -11,6 +11,11 @@ export class ContaServices {
 
     async criarConta(conta: Conta): Promise<boolean> {
 
+        const contaExiste = await this.database.buscarUsuario(conta);
+        if (contaExiste) {
+            return false;
+        }
+
         const senhaUsuario = conta.senha;
         const senhaCriptografada = await bcrypt.hash(senhaUsuario, 8);
         conta.senha = senhaCriptografada;
@@ -25,11 +30,14 @@ export class ContaServices {
     async loginConta(conta: Conta): Promise<string | null> {
 
         const usuario = await this.database.buscarUsuario(conta);
-        const resultado = await bcrypt.compare(conta.senha, usuario!.senha)
+        if (!usuario || !usuario.senha) {
+            return null;
+        }
+
+        const resultado = await bcrypt.compare(conta.senha, usuario.senha)
 
         if (resultado) {
-            const chave = String(usuario?.id);
-
+            const chave = "BATATA";
             return jwt.sign({ email: usuario?.email }, chave, { expiresIn: "1h" });
         } else {
             return null;

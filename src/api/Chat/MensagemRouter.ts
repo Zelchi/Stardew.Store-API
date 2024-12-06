@@ -1,11 +1,14 @@
 import express from "express";
-import { ChatController } from "./MensagemController";
+import { MensagemController } from "./MensagemController";
 
 const router = express.Router();
 
-const chatController = new ChatController();
+const mensagemController = new MensagemController();
 
-// Usuario
-router.get("/mensagens", (req, res) => chatController.visualizarMensagens(req, res));
-router.post("/enviar", (req, res) => chatController.enviarMensagem(req, res));
-router.delete("/deletar/:id", (req, res) => chatController.deletarMensagem(req, res));
+router.use((req, res, next) => {mensagemController.Autenticacao(req, res, next)});
+
+router.get("/mensagens/:sala", (req, res) => mensagemController.visualizarMensagens(req, res));
+router.post("/enviar/:sala", (req, res) => mensagemController.enviarMensagem(req, res));
+router.delete("/deletar/:sala/:id", (req, res) => mensagemController.deletarMensagem(req, res));
+
+export default router;

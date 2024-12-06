@@ -1,13 +1,35 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { MensagemServices } from "./MensagemService";
 import { MensagemRepository } from "./MensagemRepository";
 import { AppDataSource } from "../../database/config/dataSource";
 import { ValidacaoMensagem } from "./MensagemModel";
+import jwt from "jsonwebtoken";
 
-const chatRepository = new MensagemRepository(AppDataSource.getRepository("ChatEntity"));
-const chatServices = new MensagemServices(chatRepository);
+const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"));
+const mensagemServices = new MensagemServices(mensagemRepository);
 
-export class ChatController {
+export class MensagemController {
+
+    Autenticacao = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        const pegaToken = req.headers.authorization;
+        const token = pegaToken?.split(" ")[1];
+
+        if (!token) {
+            res.status(401).send("Token não informado ou mal formatado");
+            return;
+        }
+
+        jwt.verify(token, "BATATA", (err) => {
+            if (err) {
+                console.log("Token inválido");
+                res.status(401).send("Token inválido");
+                return;
+            } else {
+                console.log("Token válido");
+                next();
+            }
+        });
+    }
 
     visualizarMensagens = async (req: Request, res: Response): Promise<void> => {
         const sala = Number(req.params.sala);
@@ -15,16 +37,19 @@ export class ChatController {
         if (sala === undefined || sala === null || isNaN(sala)) {
             res.status(400).send("Sala não encontrada");
         } else {
-            const mensagens = await chatServices.visualizarMensagens(sala);
+            const mensagens = await mensagemServices.visualizarMensagens(sala);
             res.status(200).send(mensagens);
         }
     }
 
     enviarMensagem = async (req: Request, res: Response): Promise<void> => {
         const sala = Number(req.params.sala);
+        console.log(sala);
         const conteudo = req.body.conteudo;
-        const nome = req.body.nome;
-        const msgUsuario = { nome, sala, conteudo };
+        console.log(conteudo);
+        const nomeUsuario = req.body.nome;
+        console.log(nomeUsuario);
+        const msgUsuario = { nomeUsuario, sala, conteudo };
 
         if (msgUsuario.conteudo === undefined) {
             res.status(400).send("Mensagem não informada");
@@ -34,7 +59,7 @@ export class ChatController {
         }
 
         if (ValidacaoMensagem.isValid(msgUsuario)) {
-            await chatServices.enviarMensagem(msgUsuario)
+            await mensagemServices.enviarMensagem(msgUsuario)
             res.status(201).send("Mensagem enviada com sucesso");
         } else {
             res.status(400).send("Erro ao enviar mensagem");
@@ -42,12 +67,14 @@ export class ChatController {
     }
 
     deletarMensagem = async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.body;
-        if (id === undefined) {
+        const idSala = Number(req.params.sala);
+        const idMsg = Number(req.params.id);
+
+        if (idMsg === undefined || idSala === undefined) {
             res.status(400).send("Id da mensagem não informado");
         }
 
-        if (await chatServices.deletarMensagem(id)) {
+        if (await mensagemServices.deletarMensagem(idSala, idMsg)) {
             res.status(200).send("Mensagem deletada com sucesso");
         } else {
             res.status(400).send("Erro ao deletar mensagem");
