@@ -21,3 +21,11 @@ Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para inter
    ```bash
    git clone https://github.com/Zelchi/ChatWeb-API.git
    ```
+2. Inicie o projeto com Docker:
+   ```bash
+   npm run init
+   ```
+3. Ou com o nodemon:
+   ```bash
+   npm run dev
+   ```
