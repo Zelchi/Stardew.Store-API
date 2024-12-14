@@ -12,10 +12,10 @@ export class ProdutoEntity {
     valor?: number;
     @Column()
     quantidade?: number;
-    @Column()
+    @Column({ nullable: true }) 
     imagem?: string;
     @Column()
     dataCriacao?: Date;
-    @ManyToOne(() => ContaEntity, conta => conta.inventario)
-    conta?: ContaEntity;
+    @ManyToOne(() => ContaEntity, (conta) => conta.produtos)
+    dono?: ContaEntity;
 }

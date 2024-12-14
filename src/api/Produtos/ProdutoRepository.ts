@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import { ProdutoEntity } from "./ProdutoEntity";
 import { Produto } from "./ProdutoModel";
 
@@ -21,22 +21,12 @@ export class ProdutoRepository {
         return produtoEntity;
     }
 
-    visualizarProdutos = async (): Promise<ProdutoEntity[]> => {
-        try {
-            const resposta = await this.database.find();
-            return resposta;
-        } catch (error) {
-            throw error;
-        }
-    }
+    visualizarProdutos = async (nome?: string): Promise<ProdutoEntity[]> => {
+        let where: any = {};
 
-    visualizarProdutoPorId = async (id: number): Promise<ProdutoEntity | null> => {
-        try {
-            const produto = await this.database.findOneBy({ id });
-            return produto;
-        } catch (error) {
-            throw error;
-        }
+        if (nome) where.nome = Like(`%${nome}%`);
+
+        return await this.database.find({ where });
     }
 
     criarProduto = async (produto: Produto): Promise<ProdutoEntity> => {
@@ -74,14 +64,12 @@ export class ProdutoRepository {
         }
     }
 
-
     deletarProduto = async (id: number): Promise<ProdutoEntity | null> => {
         try {
             const produto = await this.database.findOneBy({ id });
             console.log(produto);
             const produtoDeletado = await this.database.delete({ id });
             console.log(produtoDeletado);
-
             return produto;
         } catch (error) {
             throw error;

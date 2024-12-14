@@ -44,11 +44,11 @@ export class MensagemController {
 
     enviarMensagem = async (req: Request, res: Response): Promise<void> => {
         const sala = Number(req.params.sala);
-        console.log(sala);
+        
         const conteudo = req.body.conteudo;
-        console.log(conteudo);
+        
         const nomeUsuario = req.body.nome;
-        console.log(nomeUsuario);
+        
         const msgUsuario = { nomeUsuario, sala, conteudo };
 
         if (msgUsuario.conteudo === undefined) {

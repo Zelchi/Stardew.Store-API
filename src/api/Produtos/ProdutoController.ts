@@ -10,23 +10,15 @@ const produtoServices = new ProdutoServices(produtoRepository);
 export class ProdutoController {
 
     mostraProdutos = async (req: Request, res: Response): Promise<void> => {
-        const produtos = await produtoServices.visualizarProdutos();
-        res.status(200).send(produtos);
-    }
+        let { nome } = req.query;
+        const nomeProduto = String(nome);
 
-    mostraProdutoPorId = async (req: Request, res: Response): Promise<void> => {
-        let { id } = req.params;
-        const idProduto = Number(id);
+        const produtos = await produtoServices.visualizarProdutos(nomeProduto);
 
-        if (idProduto === undefined || isNaN(idProduto) || idProduto <= 0) {
-            res.status(400).send("Produto não encontrado");
+        if (produtos) {
+            res.status(200).send(produtos);
         } else {
-            const produto = await produtoServices.visualizarProdutoPorId(idProduto);
-            if (produto === null) {
-                res.status(404).send("Produto não encontrado");
-            } else {
-                res.status(200).send(produto);
-            }
+            res.status(404).send("Produto não encontrado");
         }
     }
 
@@ -48,7 +40,7 @@ export class ProdutoController {
         const idProduto = Number(id);
         const produto = { nome, valor, quantidade };
 
-        if ( idProduto !== undefined) {
+        if (idProduto !== undefined) {
             const produtoAtualizado = await produtoServices.atualizarProduto(idProduto, produto);
             res.status(200).send(produtoAtualizado);
         } else {

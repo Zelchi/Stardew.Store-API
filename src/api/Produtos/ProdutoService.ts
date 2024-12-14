@@ -8,14 +8,8 @@ export class ProdutoServices {
         this.database = repository; 
     };
 
-    async visualizarProdutos(): Promise<ProdutoEntity[] | null> {
-        const listaProdutos = await this.database.visualizarProdutos();
-        return listaProdutos;
-    }
-
-    async visualizarProdutoPorId(id: number): Promise<ProdutoEntity | null> {
-        const produto = await this.database.visualizarProdutoPorId(id);
-        return produto;
+    async visualizarProdutos(nome?:string): Promise<ProdutoEntity[] | null> {
+        return await this.database.visualizarProdutos(nome);
     }
 
     async criarProduto(produto: Produto): Promise<void> {

@@ -19,8 +19,9 @@ export class ContaEntity {
     saldo?: number;
     @Column()
     dataCriacao?: Date;
-    @OneToMany(() => ProdutoEntity, produto => produto.conta)
-    inventario?: ProdutoEntity[];
-    @OneToMany(() => MensagemEntity, mensagem => mensagem.conteudo)
-    mensagens?: MensagemEntity[];
+
+    @OneToMany(() => ProdutoEntity, (produto) => produto.dono)
+    produtos!: ProdutoEntity[];
+    @OneToMany(() => MensagemEntity, (mensagem) => mensagem.conteudo)
+    mensagens!: MensagemEntity[];
 }

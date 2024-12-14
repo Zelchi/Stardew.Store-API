@@ -16,7 +16,7 @@ export class ContaRepository {
         contaEntity.email = conta.email;
         contaEntity.senha = conta.senha;
         contaEntity.saldo = 0;
-        contaEntity.inventario = [];
+        contaEntity.produtos = [];
 
         contaEntity.dataCriacao = new Date();
 
