@@ -1,6 +1,5 @@
-import { Produto } from './ProdutoModel';
 import { ProdutoRepository } from './ProdutoRepository';
-import { ProdutoEntity} from './ProdutoEntity';
+import { ProdutoEntity } from './ProdutoEntity';
 
 export class ProdutoServices {
     private database: ProdutoRepository
@@ -8,31 +7,16 @@ export class ProdutoServices {
         this.database = repository; 
     };
 
-    async visualizarProdutos(nome?:string): Promise<ProdutoEntity[] | null> {
-        return await this.database.visualizarProdutos(nome);
+    async visualizarProdutos(nome:string, userId:number): Promise<ProdutoEntity[] | null> {
+        return await this.database.visualizarProdutos(nome, userId);
     }
 
-    async criarProduto(produto: Produto): Promise<void> {
-        this.database.criarProduto(produto);
+    async criarProduto(nome:string, valor:number, quantidade:number): Promise<ProdutoEntity> {
+        return this.database.criarProduto(nome, valor, quantidade);
     }
 
-    async atualizarProduto(id: number, produto: Produto): Promise<ProdutoEntity | null> {
-        const novoProduto: any = {};
-
-        if (produto.nome !== undefined && produto.nome !== null) {
-            novoProduto.nome = produto.nome;
-        }
-
-        if (produto.valor !== undefined && produto.valor !== null) {
-            novoProduto.valor = produto.valor;
-        }
-
-        if (produto.quantidade !== undefined && produto.quantidade !== null) {
-            novoProduto.quantidade = produto.quantidade;
-        }
-
-        const produtoAtualizado = await this.database.atualizarProduto(id, novoProduto);
-        return produtoAtualizado;
+    async atualizarProduto(userId:number, id:number, nome:string, valor:number, quantidade:number): Promise<ProdutoEntity | null> {
+        return await this.database.atualizarProduto(userId, id, nome, valor, quantidade);
     }
 
     async deletarProduto(id: number): Promise<ProdutoEntity | null> {

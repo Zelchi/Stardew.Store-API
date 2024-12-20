@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { MensagemEntity } from "./MensagemEntity";
-import { Mensagem } from "./MensagemModel";
 
 export class MensagemRepository {
     private database: Repository<MensagemEntity>;
@@ -9,18 +8,7 @@ export class MensagemRepository {
         this.database = repository;
     }
 
-    criarRegistroMensagem = (mensagem: Mensagem) => {
-        const mensagemEntity = new MensagemEntity();
-
-        mensagemEntity.nomeUsuario = mensagem.nomeUsuario ? mensagem.nomeUsuario : 'Anônimo';
-        mensagemEntity.sala = mensagem.sala;
-        mensagemEntity.conteudo = mensagem.conteudo;
-        mensagemEntity.dataCriacao = new Date();
-
-        return mensagemEntity;
-    }
-
-    buscarMenssagens = async (sala: number): Promise<Mensagem[]> => {
+    buscarMenssagens = async (sala: number): Promise<MensagemEntity[]> => {
         try {
             const mensagens = this.database.findBy({ sala: sala });
             return mensagens;
@@ -29,9 +17,9 @@ export class MensagemRepository {
         }
     }
 
-    registraMensagem = async (mensagem: Mensagem): Promise<boolean> => {
+    registraMensagem = async (sala:number,nome:string,conteudo:string): Promise<boolean> => {
         try {
-            const mensagemEntity = this.criarRegistroMensagem(mensagem);
+            const mensagemEntity = new MensagemEntity(sala, nome, conteudo);
             await this.database.save(mensagemEntity);
             return true;
         } catch (error) {

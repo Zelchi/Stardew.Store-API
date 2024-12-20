@@ -1,5 +1,5 @@
 import { MensagemRepository } from './MensagemRepository';
-import { Mensagem } from './MensagemModel';
+import { MensagemEntity } from './MensagemEntity';
 
 export class MensagemServices {
     private database: MensagemRepository
@@ -7,13 +7,13 @@ export class MensagemServices {
         this.database = repository;
     };
 
-    async visualizarMensagens(id: number): Promise<Mensagem[]> {
+    async visualizarMensagens(id: number): Promise<MensagemEntity[]> {
         const mensagens = await this.database.buscarMenssagens(id);
         return mensagens;
     }
 
-    async enviarMensagem(mensagem: Mensagem): Promise<boolean> {
-        if (await this.database.registraMensagem(mensagem)) {
+    async enviarMensagem(sala: number, nome: string, conteudo: string): Promise<boolean> {
+        if (await this.database.registraMensagem(sala, nome, conteudo)) {
             return true;
         } else {
             return false;

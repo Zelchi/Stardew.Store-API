@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { MensagemServices } from "./MensagemService";
 import { MensagemRepository } from "./MensagemRepository";
 import { AppDataSource } from "../../database/config/dataSource";
-import { ValidacaoMensagem } from "./MensagemModel";
 import jwt from "jsonwebtoken";
 
 const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"));
@@ -21,11 +20,9 @@ export class MensagemController {
 
         jwt.verify(token, "BATATA", (err) => {
             if (err) {
-                console.log("Token inválido");
                 res.status(401).send("Token inválido");
                 return;
             } else {
-                console.log("Token válido");
                 next();
             }
         });
@@ -43,23 +40,14 @@ export class MensagemController {
     }
 
     enviarMensagem = async (req: Request, res: Response): Promise<void> => {
-        const sala = Number(req.params.sala);
-        
-        const conteudo = req.body.conteudo;
-        
-        const nomeUsuario = req.body.nome;
-        
-        const msgUsuario = { nomeUsuario, sala, conteudo };
+        const { conteudo, nome, sala } = req.body;
+        const numeroDaSala = Number(sala);
 
-        if (msgUsuario.conteudo === undefined) {
-            res.status(400).send("Mensagem não informada");
-        }
-        if (msgUsuario.sala === undefined || msgUsuario.sala === null || isNaN(msgUsuario.sala)) {
-            res.status(400).send("Sala não encontrada");
+        if (conteudo === undefined || nome === undefined || sala === undefined) {
+            res.status(400).send("Dados não informados");
         }
 
-        if (ValidacaoMensagem.isValid(msgUsuario)) {
-            await mensagemServices.enviarMensagem(msgUsuario)
+        if (await mensagemServices.enviarMensagem(numeroDaSala, nome, conteudo)) {
             res.status(201).send("Mensagem enviada com sucesso");
         } else {
             res.status(400).send("Erro ao enviar mensagem");

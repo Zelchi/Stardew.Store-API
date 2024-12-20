@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { ContaEntity } from "./ContaEntity";
-import { Conta } from "./ContaModel";
 
 export class ContaRepository {
     private database: Repository<ContaEntity>;
@@ -9,23 +8,9 @@ export class ContaRepository {
         this.database = repository;
     }
 
-    gerarConta = (conta: Conta) => {
-        const contaEntity = new ContaEntity();
-
-        contaEntity.nome = conta.nome;
-        contaEntity.email = conta.email;
-        contaEntity.senha = conta.senha;
-        contaEntity.saldo = 0;
-        contaEntity.produtos = [];
-
-        contaEntity.dataCriacao = new Date();
-
-        return contaEntity;
-    }
-
-    criarConta = async (conta: Conta): Promise<boolean> => {
+    criarConta = async (nome:string, email:string, senha:string): Promise<boolean> => {
         try {
-            const contaEntity = this.gerarConta(conta);
+            const contaEntity = new ContaEntity(nome, email, senha);
             await this.database.save(contaEntity);
             return true;
         } catch (error) {
@@ -33,9 +18,9 @@ export class ContaRepository {
         }
     }
 
-    buscarUsuario = async (conta: Conta): Promise<ContaEntity | null> => {
+    buscarUsuario = async (email:string): Promise<ContaEntity | null> => {
         try {
-            const usuario = await this.database.findOneBy({ email: conta.email });
+            const usuario = await this.database.findOneBy({ email });
             return usuario;
         } catch (error) {
             throw error;

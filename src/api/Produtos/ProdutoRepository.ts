@@ -1,6 +1,5 @@
 import { Like, Repository } from "typeorm";
 import { ProdutoEntity } from "./ProdutoEntity";
-import { Produto } from "./ProdutoModel";
 
 export class ProdutoRepository {
     private database: Repository<ProdutoEntity>;
@@ -9,52 +8,40 @@ export class ProdutoRepository {
         this.database = repository;
     }
 
-    gerarProduto = (produto: Produto) => {
-        const produtoEntity = new ProdutoEntity();
-
-        produtoEntity.nome = produto.nome;
-        produtoEntity.valor = produto.valor;
-        produtoEntity.quantidade = produto.quantidade;
-
-        produtoEntity.dataCriacao = new Date();
-
-        return produtoEntity;
-    }
-
-    visualizarProdutos = async (nome?: string): Promise<ProdutoEntity[]> => {
+    visualizarProdutos = async (nome: string, userId:number): Promise<ProdutoEntity[]> => {
         let where: any = {};
 
+        if (userId) where.criador = { id: userId };
         if (nome) where.nome = Like(`%${nome}%`);
 
         return await this.database.find({ where });
     }
 
-    criarProduto = async (produto: Produto): Promise<ProdutoEntity> => {
+    criarProduto = async (nome: string, valor: number, quantidade: number): Promise<ProdutoEntity> => {
         try {
-            const resposta = this.gerarProduto(produto);
-            const respostaSalva = await this.database.save(resposta);
-            return respostaSalva;
+            const produto = new ProdutoEntity(nome, valor, quantidade);
+            return await this.database.save(produto);
         } catch (error) {
             throw error;
         }
     }
 
-    atualizarProduto = async (id: number, produto: Produto): Promise<ProdutoEntity | null> => {
+    atualizarProduto = async (userId: number, id: number, nome?: string, valor?: number, quantidade?: number): Promise<ProdutoEntity | null> => {
         try {
-            const produtoAtualizado = await this.database.findOneBy({ id });
+            const produtoAtualizado = await this.database.findOne({ where: { id, criador: { id: userId } as ProdutoEntity } });
 
             if (!produtoAtualizado) {
                 return null;
             }
 
-            if (produto.nome) {
-                produtoAtualizado.nome = produto.nome;
+            if (nome) {
+                produtoAtualizado.nome = nome;
             }
-            if (produto.valor) {
-                produtoAtualizado.valor = produto.valor;
+            if (valor) {
+                produtoAtualizado.valor = valor;
             }
-            if (produto.quantidade) {
-                produtoAtualizado.quantidade = produto.quantidade;
+            if (quantidade) {
+                produtoAtualizado.quantidade = quantidade;
             }
 
             const produtoSalvo = await this.database.save(produtoAtualizado);
@@ -67,9 +54,7 @@ export class ProdutoRepository {
     deletarProduto = async (id: number): Promise<ProdutoEntity | null> => {
         try {
             const produto = await this.database.findOneBy({ id });
-            console.log(produto);
             const produtoDeletado = await this.database.delete({ id });
-            console.log(produtoDeletado);
             return produto;
         } catch (error) {
             throw error;

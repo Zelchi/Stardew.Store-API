@@ -10,13 +10,12 @@ export class ContaController {
 
     criarConta = async (req: Request, res: Response): Promise<void> => {
         const { nome, email, senha } = req.body;
-        const conta = { nome, email, senha };
 
-        if (conta.nome === undefined || conta.email === undefined || conta.senha === undefined) {
+        if (nome === undefined || email === undefined || senha === undefined) {
             res.status(400).send("Dados não informados");
         }
 
-        if (await contaServices.criarConta(conta)) {
+        if (await contaServices.criarConta(nome, email, senha)) {
             res.status(201).send("Conta criada com sucesso");
         } else {
             res.status(400).send("Conta já existe");
@@ -31,7 +30,7 @@ export class ContaController {
             res.status(400).send("Email ou senha não informados");
         }
 
-        const token = await contaServices.loginConta(conta);
+        const token = await contaServices.loginConta(email, senha);
 
         if (token) {
             res.status(200).send(token);
