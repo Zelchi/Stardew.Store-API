@@ -4,7 +4,7 @@ import { MensagemRepository } from "./MensagemRepository";
 import { AppDataSource } from "../../database/config/dataSource";
 import jwt from "jsonwebtoken";
 
-const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"));
+const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"), AppDataSource.getRepository("ContaEntity"));
 const mensagemServices = new MensagemServices(mensagemRepository);
 
 export class MensagemController {
@@ -28,6 +28,13 @@ export class MensagemController {
         });
     }
 
+    pegarUserAutorizado = async (req: Request, res: Response): Promise<object> => {
+        const pegaToken = req.headers.authorization;
+        const token = pegaToken?.split(" ")[1];
+
+        return jwt.decode(token as string) as { userId: number, userNome: string };
+    }
+
     visualizarMensagens = async (req: Request, res: Response): Promise<void> => {
         const sala = Number(req.params.sala);
 
@@ -40,14 +47,16 @@ export class MensagemController {
     }
 
     enviarMensagem = async (req: Request, res: Response): Promise<void> => {
-        const { conteudo, nome, sala } = req.body;
+        const criador:any = await this.pegarUserAutorizado(req, res);
+        const { userId, userNome } = criador;
+        const { conteudo, sala } = req.body;
         const numeroDaSala = Number(sala);
 
-        if (conteudo === undefined || nome === undefined || sala === undefined) {
+        if (conteudo === undefined || sala === undefined) {
             res.status(400).send("Dados não informados");
         }
 
-        if (await mensagemServices.enviarMensagem(numeroDaSala, nome, conteudo)) {
+        if (await mensagemServices.enviarMensagem(userId, numeroDaSala, userNome, conteudo)) {
             res.status(201).send("Mensagem enviada com sucesso");
         } else {
             res.status(400).send("Erro ao enviar mensagem");

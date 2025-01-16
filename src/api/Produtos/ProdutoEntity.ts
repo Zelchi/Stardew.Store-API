@@ -18,13 +18,15 @@ export class ProdutoEntity {
     dataCriacao: Date;
     @ManyToOne(() => ContaEntity, (conta) => conta.id)
     @JoinColumn({ name: "criador" })
-    criador!: ContaEntity;
+    criador: ContaEntity;
 
     constructor(
+        user: ContaEntity,
         nome: string,
         valor: number,
         quantidade: number,
     ) {
+        this.criador = user;
         this.nome = nome;
         this.valor = valor;
         this.quantidade = quantidade;

@@ -22,7 +22,7 @@ export class ContaEntity {
 
     @OneToMany(() => ProdutoEntity, (produto) => produto.criador)
     produtos!: ProdutoEntity[];
-    @OneToMany(() => MensagemEntity, (mensagem) => mensagem.conteudo)
+    @OneToMany(() => MensagemEntity, (mensagem) => mensagem.criador)
     mensagens!: MensagemEntity[];
 
     constructor(

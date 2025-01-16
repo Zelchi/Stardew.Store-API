@@ -10,6 +10,7 @@ export class ContaController {
 
     criarConta = async (req: Request, res: Response): Promise<void> => {
         const { nome, email, senha } = req.body;
+        console.log(req.body);
 
         if (nome === undefined || email === undefined || senha === undefined) {
             res.status(400).send("Dados não informados");
@@ -25,6 +26,7 @@ export class ContaController {
     loginConta = async (req: Request, res: Response): Promise<void> => {
         const { email, senha } = req.body;
         const conta = { nome: "", email, senha };
+        console.log(req.body);
 
         if (conta.email === undefined || conta.senha === undefined) {
             res.status(400).send("Email ou senha não informados");

@@ -11,8 +11,8 @@ export class ProdutoServices {
         return await this.database.visualizarProdutos(nome, userId);
     }
 
-    async criarProduto(nome:string, valor:number, quantidade:number): Promise<ProdutoEntity> {
-        return this.database.criarProduto(nome, valor, quantidade);
+    async criarProduto(userId: number, nome:string, valor:number, quantidade:number): Promise<ProdutoEntity> {
+        return this.database.criarProduto(userId, nome, valor, quantidade);
     }
 
     async atualizarProduto(userId:number, id:number, nome:string, valor:number, quantidade:number): Promise<ProdutoEntity | null> {

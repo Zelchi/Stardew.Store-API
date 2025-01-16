@@ -20,8 +20,7 @@ export class ContaRepository {
 
     buscarUsuario = async (email:string): Promise<ContaEntity | null> => {
         try {
-            const usuario = await this.database.findOneBy({ email });
-            return usuario;
+            return await this.database.findOne({ where: { email} });
         } catch (error) {
             throw error;
         }

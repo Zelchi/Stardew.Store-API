@@ -4,7 +4,7 @@ import { ProdutoRepository } from './ProdutoRepository';
 import { AppDataSource } from '../../database/config/dataSource';
 import jwt from 'jsonwebtoken';
 
-const produtoRepository = new ProdutoRepository(AppDataSource.getRepository("ProdutoEntity"));
+const produtoRepository = new ProdutoRepository(AppDataSource.getRepository("ProdutoEntity"), AppDataSource.getRepository("ContaEntity"));
 const produtoServices = new ProdutoServices(produtoRepository);
 
 export class ProdutoController {
@@ -28,15 +28,15 @@ export class ProdutoController {
         });
     }
 
-    pegarIdAutorizado = async (req: Request, res: Response): Promise<object> => {
+    pegarUserAutorizado = async (req: Request, res: Response): Promise<object> => {
         const pegaToken = req.headers.authorization;
         const token = pegaToken?.split(" ")[1];
 
-        return jwt.decode(token as string) as { id: number };
+        return jwt.decode(token as string) as { userId: number, userNome: string };
     }
 
     mostraProdutos = async (req: Request, res: Response): Promise<void> => {
-        const criador:any = await this.pegarIdAutorizado(req, res);
+        const criador:any = await this.pegarUserAutorizado(req, res);
         const { userId } = criador;
         const { nome } = req.body;
         const nomeProduto = String(nome);
@@ -51,13 +51,16 @@ export class ProdutoController {
     }
 
     criaProduto = async (req: Request, res: Response): Promise<void> => {
+        const criador:any = await this.pegarUserAutorizado(req, res);
+        const { userId } = criador;
         const { nome, valor, quantidade } = req.body;
 
         if (nome === undefined || valor === undefined || quantidade === undefined) {
             res.status(400).send("Dados não informados");
+            return;
         }
 
-        if (await produtoServices.criarProduto(nome, valor, quantidade)) {
+        if (await produtoServices.criarProduto(userId, nome, valor, quantidade)) {
             res.status(201).send();
         } else {
             res.status(400).send();
@@ -65,7 +68,7 @@ export class ProdutoController {
     }
 
     atualizarProduto = async (req: Request, res: Response): Promise<void> => {
-        const criador:any = await this.pegarIdAutorizado(req, res);
+        const criador:any = await this.pegarUserAutorizado(req, res);
         const { userId } = criador;
         const { id, nome, valor, quantidade } = req.body;
 

@@ -16,13 +16,15 @@ export class MensagemEntity {
     dataCriacao: Date;
     @ManyToOne(() => ContaEntity, (conta) => conta.id)
     @JoinColumn({ name: "criador" })
-    criador!: ContaEntity;
+    criador: ContaEntity;
 
     constructor(
+        user: ContaEntity,
         sala: number,
         nomeUsuario: string,
         conteudo: string,
     ) {
+        this.criador = user;
         this.sala = sala;
         this.nomeUsuario = nomeUsuario;
         this.conteudo = conteudo;

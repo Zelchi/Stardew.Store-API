@@ -12,8 +12,8 @@ export class MensagemServices {
         return mensagens;
     }
 
-    async enviarMensagem(sala: number, nome: string, conteudo: string): Promise<boolean> {
-        if (await this.database.registraMensagem(sala, nome, conteudo)) {
+    async enviarMensagem(userId: number, sala: number, nome: string, conteudo: string): Promise<boolean> {
+        if (await this.database.registraMensagem(userId, sala, nome, conteudo)) {
             return true;
         } else {
             return false;
