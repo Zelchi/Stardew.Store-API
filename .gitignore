@@ -2,3 +2,6 @@ node_modules
 dist
 src/database/db.sqlite
 .env
+squarecloud.app
+output.zip
+deploy.js
