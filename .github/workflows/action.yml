@@ -1,11 +1,11 @@
-name: Publish
+name: Stardew-API
 on:
   push:
     branches:
       - main
 jobs:
   publish-production:
-    name: Publish
+    name: Stardew-API
     runs-on: ubuntu-latest
     steps:
       - name: Setup Square Cloud
