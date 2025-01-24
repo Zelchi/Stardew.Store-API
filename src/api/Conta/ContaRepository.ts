@@ -25,4 +25,12 @@ export class ContaRepository {
             throw error;
         }
     }
+
+    buscarUsuarioPorId = async (id:number): Promise<ContaEntity | null> => {
+        try {
+            return await this.database.findOne({ where: { id} });
+        } catch (error) {
+            throw error;
+        }
+    }
 }

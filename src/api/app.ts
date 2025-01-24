@@ -6,7 +6,8 @@ import { AppDataSource } from "../database/config/dataSource";
 const app = express(); app.use(express.json());
 
 app.use(cors({
-    origin: '*'
+    origin: ['https://zelchi.github.io/stardew-shop/', 'http://localhost:5173/'],
+    optionsSuccessStatus: 200
 }));
 
 import ContaRouter from "./Conta/ContaRouter";

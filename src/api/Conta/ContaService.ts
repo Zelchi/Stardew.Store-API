@@ -42,4 +42,9 @@ export class ContaServices {
             return null;
         }
     }
+
+    async infoConta(id:number): Promise<ContaEntity | null> {
+        const conta = await this.database.buscarUsuarioPorId(id);
+        return conta;
+    }
 }
