@@ -34,7 +34,7 @@ export class ContaEntity {
         this.email = email;
         this.senha = senha;
         this.imagem = "";
-        this.saldo = 0;
+        this.saldo = 1000;
         this.dataCriacao = new Date();
     }
 }
