@@ -3,11 +3,11 @@ import express from "express";
 import cors from "cors";
 import { AppDataSource } from "../database/config/dataSource";
 
-const app = express(); app.use(express.json());
+const app = express();
+app.use(express.json());
 
 app.use(cors({
-    origin: ['https://zelchi.github.io/stardew-shop/', 'http://localhost:5173/'],
-    optionsSuccessStatus: 200
+    origin: "*",
 }));
 
 import ContaRouter from "./Conta/ContaRouter";

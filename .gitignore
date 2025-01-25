@@ -3,5 +3,5 @@ dist
 src/database/db.sqlite
 .env
 squarecloud.app
-output.zip
+*.zip
 deploy.js
