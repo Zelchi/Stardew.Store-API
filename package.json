@@ -1,6 +1,6 @@
 {
-  "name": "chatweb-back",
-  "version": "1.0.0",
+  "name": "stardew-store",
+  "version": "1.0.1",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
