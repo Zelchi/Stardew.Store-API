@@ -1,8 +1,8 @@
 # EM DESENVOLVIMENTO!!!
 
-# API de Gestão de Vendas por Chat
+# API do Stardew.Store
 
-Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para interação com o banco de dados **SQLite** e **JWT** para autenticação. O objetivo do projeto é permitir a criação e gerenciamento de contas de usuários, cada uma com seu próprio inventário, e gerenciar vendas por meio de um sistema de chat.
+Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para interação com o banco de dados **SQLite** e **JWT** para autenticação. O objetivo do projeto é permitir a criação e gerenciamento de contas de usuários, cada uma com seu próprio inventário, e gerenciar vendas por meio da loja.
 
 ## Tecnologias Utilizadas
 
@@ -13,13 +13,12 @@ Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para inter
 - **SQLite**: Banco de dados fácil e eficiente.
 - **JWT**: Para autenticação segura de usuários.
 - **bcrypt**: Para criptografar e validar senhas de usuários.
-- **Docker**: Para facilitar o ambiente de desenvolvimento e a configuração do servidor.
 
 ## Instalação
 
 ```bash
-   git clone https://github.com/Zelchi/Stardew.Store-API
+git clone https://github.com/Zelchi/Stardew.Store-API
 ```
 ```bash
-   npm run dev
+npm run dev
 ```
