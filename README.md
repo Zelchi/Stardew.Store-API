@@ -17,15 +17,9 @@ Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para inter
 
 ## Instalação
 
-1. Clone o repositório:
-   ```bash
+```bash
    git clone https://github.com/Zelchi/Stardew.Store-API
-   ```
-2. Inicie o projeto com Docker: O comando npm run init configura o banco de dados e inicia o ambiente Docker.
-   ```bash
-   npm run init
-   ```
-3. Ou, se preferir rodar sem Docker, use o nodemon para desenvolvimento local:
-   ```bash
+```
+```bash
    npm run dev
-   ```
+```
