@@ -19,7 +19,7 @@ Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para inter
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/Zelchi/ChatWeb-API.git
+   git clone https://github.com/Zelchi/Stardew.Store-API
    ```
 2. Inicie o projeto com Docker: O comando npm run init configura o banco de dados e inicia o ambiente Docker.
    ```bash
