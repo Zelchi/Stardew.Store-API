@@ -3,6 +3,8 @@ import { ProdutoServices } from './ProdutoService';
 import { ProdutoRepository } from './ProdutoRepository';
 import { AppDataSource } from '../../database/config/dataSource';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const produtoRepository = new ProdutoRepository(AppDataSource.getRepository("ProdutoEntity"), AppDataSource.getRepository("ContaEntity"));
 const produtoServices = new ProdutoServices(produtoRepository);
@@ -18,7 +20,7 @@ export class ProdutoController {
             return;
         }
 
-        jwt.verify(token, "BATATA", (err) => {
+        jwt.verify(token, process.env.JWT_SECRET!, (err) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;

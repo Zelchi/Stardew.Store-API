@@ -5,3 +5,4 @@ src/database/db.sqlite
 *.zip
 deploy.js
 squarecloud.config
+environment.d.ts

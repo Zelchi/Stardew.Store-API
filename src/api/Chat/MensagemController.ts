@@ -3,6 +3,8 @@ import { MensagemServices } from "./MensagemService";
 import { MensagemRepository } from "./MensagemRepository";
 import { AppDataSource } from "../../database/config/dataSource";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"), AppDataSource.getRepository("ContaEntity"));
 const mensagemServices = new MensagemServices(mensagemRepository);
@@ -18,7 +20,7 @@ export class MensagemController {
             return;
         }
 
-        jwt.verify(token, "BATATA", (err) => {
+        jwt.verify(token, process.env.JWT_SECRET!, (err) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;
@@ -47,7 +49,7 @@ export class MensagemController {
     }
 
     enviarMensagem = async (req: Request, res: Response): Promise<void> => {
-        const criador:any = await this.pegarUserAutorizado(req, res);
+        const criador: any = await this.pegarUserAutorizado(req, res);
         const { userId, userNome } = criador;
         const { conteudo, sala } = req.body;
         const numeroDaSala = Number(sala);
