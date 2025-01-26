@@ -97,7 +97,6 @@ export class ContaController {
                 const usuario = await contaRepository.buscarUsuarioPorId(Number(userId));
 
                 if (usuario) {
-                    console.log(usuario);
                     res.status(200).send(usuario);
                     return;
                 } else {
