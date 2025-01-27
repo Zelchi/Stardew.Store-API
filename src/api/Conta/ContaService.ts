@@ -1,9 +1,8 @@
 import { ContaRepository } from './ContaRepository';
 import { ContaEntity } from './ContaEntity';
+import { JWT_TOKEN } from '../tokens';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
 
 export class ContaServices {
     private database: ContaRepository
@@ -39,7 +38,7 @@ export class ContaServices {
         const resultado = await bcrypt.compare(senha, usuario.senha)
 
         if (resultado) {
-            return jwt.sign({ userId: usuario.id, userNome: usuario.nome }, process.env.JWT_SECRET!, { expiresIn: "7d" });
+            return jwt.sign({ userId: usuario.id, userNome: usuario.nome }, JWT_TOKEN, { expiresIn: "7d" });
         } else {
             return null;
         }

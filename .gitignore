@@ -6,3 +6,4 @@ src/database/db.sqlite
 deploy.js
 squarecloud.config
 environment.d.ts
+tokens.ts

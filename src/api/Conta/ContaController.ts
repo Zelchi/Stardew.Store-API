@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 import { ContaServices } from "./ContaService";
 import { ContaRepository } from "./ContaRepository";
 import { AppDataSource } from "../../database/config/dataSource";
-import dotenv from "dotenv";
-dotenv.config();
+import { JWT_TOKEN } from "../tokens";
+import jwt from "jsonwebtoken";
 
 const contaRepository = new ContaRepository(AppDataSource.getRepository("ContaEntity"));
 const contaServices = new ContaServices(contaRepository);
@@ -20,7 +19,7 @@ export class ContaController {
             return;
         }
 
-        jwt.verify(token, process.env.JWT_SECRET!, (err) => {
+        jwt.verify(token, JWT_TOKEN, (err) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;
@@ -88,7 +87,7 @@ export class ContaController {
             return;
         }
 
-        jwt.verify(token, process.env.JWT_SECRET!, async (err, decoded) => {
+        jwt.verify(token, JWT_TOKEN, async (err, decoded) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;

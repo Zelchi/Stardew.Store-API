@@ -2,9 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { MensagemServices } from "./MensagemService";
 import { MensagemRepository } from "./MensagemRepository";
 import { AppDataSource } from "../../database/config/dataSource";
+import { JWT_TOKEN } from "../tokens";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
 
 const mensagemRepository = new MensagemRepository(AppDataSource.getRepository("MensagemEntity"), AppDataSource.getRepository("ContaEntity"));
 const mensagemServices = new MensagemServices(mensagemRepository);
@@ -20,7 +19,7 @@ export class MensagemController {
             return;
         }
 
-        jwt.verify(token, process.env.JWT_SECRET!, (err) => {
+        jwt.verify(token, JWT_TOKEN, (err) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;

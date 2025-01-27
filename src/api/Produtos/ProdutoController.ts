@@ -2,9 +2,8 @@ import { Request, Response } from 'express';
 import { ProdutoServices } from './ProdutoService';
 import { ProdutoRepository } from './ProdutoRepository';
 import { AppDataSource } from '../../database/config/dataSource';
+import { JWT_TOKEN } from "../tokens";
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
 
 const produtoRepository = new ProdutoRepository(AppDataSource.getRepository("ProdutoEntity"), AppDataSource.getRepository("ContaEntity"));
 const produtoServices = new ProdutoServices(produtoRepository);
@@ -20,7 +19,7 @@ export class ProdutoController {
             return;
         }
 
-        jwt.verify(token, process.env.JWT_SECRET!, (err) => {
+        jwt.verify(token, JWT_TOKEN, (err) => {
             if (err) {
                 res.status(401).send("Token inválido");
                 return;
