@@ -1,6 +1,6 @@
 # EM DESENVOLVIMENTO!!!
 
-# API do [Stardew.Store](stardew.store)
+# API do [Stardew.Store](https://stardew.store/#/home)
 
 Esta é uma API desenvolvida em **TypeScript** utilizando **TypeORM** para interação com o banco de dados **SQLite** e **JWT** para autenticação. O objetivo do projeto é permitir a criação e gerenciamento de contas de usuários, cada uma com seu próprio inventário, e gerenciar vendas por meio da loja.
 
