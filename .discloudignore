@@ -1,0 +1,10 @@
+node_modules
+src
+.eslintrc.json
+.gitignore
+nodemon.json
+package-lock.json
+readme.md
+server.ts
+tsconfig.json
+discloud
