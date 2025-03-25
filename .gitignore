@@ -7,3 +7,5 @@ deploy.js
 squarecloud.config
 environment.d.ts
 tokens.ts
+.discloudignore
+discloud.config
